@@ -5,12 +5,129 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 public class ToDoLIstApp {
+	
+	static Scanner scan = new Scanner(System.in);
+	
+	static ArrayList<Task> tasks = new ArrayList<>();
+	static int nextId = 1;
+	
+	static void addTask() {
+		System.out.println("Enter Task : ");
+		String title = scan.nextLine();
+		
+		Task task = new Task(nextId, title);
+		
+		tasks.add(task);
+		nextId++;
+		
+		System.out.println("Task added Successfully ");
+		System.out.println();
+	}
+	
+	static void viewTask() {
+		if(tasks.isEmpty()) {
+			System.out.println("No tasks are added yet");
+			return;
+		}else {
+			System.out.println("==== VIEW TASKS ====");
+			
+			for(Task t : tasks) {
+				String status;
+				if(t.completed) {
+					status = "completed";
+				}
+				else {
+					status = "pending";
+				}
+				
+				System.out.println(t.id+ ". "+ t.title+". "+"["+status+"]");
+			}
+		}
+	}
+	
+	static void completeTask() {
+		if(tasks.isEmpty()) {
+			System.out.println("No tasks added yet. ");
+		}else {
+			System.out.println("====== YOUR TASKS ======");
+				
+			for (Task t : tasks) {
+				String status;
+					
+				if(t.completed) {
+					status = "completed";
+				}else {
+					status = "pending";
+				}
+					
+				System.out.println(t.id +". " + t.title+ ". " +"["+ status+"]" );
+			}
+		}
+		
+		System.out.println("Enter task ID to complete : ");
+		if(!scan.hasNextInt()) {
+			System.out.println("Please enter a valid task ID");
+			scan.nextLine();
+			return;
+		}
+		
+		int id = scan.nextInt();
+		
+		boolean found = false;
+		
+		for (Task t : tasks) {
+			if(t.id == id) {
+				t.completed = true;
+				found = true;
+				
+				System.out.println("Task marked as a Completed. ");
+				break;
+			}
+		}
+		if(!found) {
+			System.out.println("Task ID not found! ");
+		}
+		
+	}
+	
+	static void deleteTask() {
+		if(tasks.isEmpty()) {
+			System.out.println("No tasks added yet. ");
+			return;
+		}
+		
+		System.out.println("Enter task ID to delete : ");
+		if(!scan.hasNextInt()) {
+			System.out.println("Please enter a valid ID to delete");
+			scan.nextLine();
+			return;
+		}
+		
+		int deleteId = scan.nextInt();
+		
+		boolean deleted = false;
+		
+		Iterator<Task> iterator = tasks.iterator(); 
+		
+		while(iterator.hasNext()) {
+			Task t = iterator.next();
+			
+			if(t.id == deleteId) {
+				iterator.remove();
+				deleted = true;
+				
+				System.out.println("Task deleted successfully");
+				break;
+			}
+		}
+		
+		if(!deleted) {
+			System.out.println("Task not found ");
+		}
+		
+	}
+	
 	public static void main(String[] args) {
-		
-		Scanner scan = new Scanner(System.in);
-		
-		ArrayList<Task> tasks = new ArrayList<>();
-		int nextId = 1;
 		
 		while(true) {
 			System.out.println();
@@ -35,115 +152,18 @@ public class ToDoLIstApp {
 			
 			switch(choice) {
 			case 1: 
-				System.out.println("Enter Task : ");
-				String title = scan.nextLine();
-				
-				Task task = new Task(nextId, title);
-				
-				tasks.add(task);
-				nextId++;
-				
-				System.out.println("Task added Successfully ");
-				System.out.println();
-				
+				addTask();
 				break;
 				
 			case 2:
-				if(tasks.isEmpty()) {
-					System.out.println("No tasks added yet. ");
-				}else {
-					System.out.println("====== YOUR TASKS ======");
-						
-					for (Task t : tasks) {
-						String status;
-							
-						if(t.completed) {
-							status = "completed";
-						}else {
-							status = "pending";
-						}
-							
-						System.out.println(t.id +". " + t.title+ ". " +"["+ status+"]" );
-					}
-				}
-				
+				viewTask();
 				break;
 				
 			case 3:
-				if(tasks.isEmpty()) {
-					System.out.println("No tasks added yet. ");
-				}else {
-					System.out.println("====== YOUR TASKS ======");
-						
-					for (Task t : tasks) {
-						String status;
-							
-						if(t.completed) {
-							status = "completed";
-						}else {
-							status = "pending";
-						}
-							
-						System.out.println(t.id +". " + t.title+ ". " +"["+ status+"]" );
-					}
-				}
-				
-				System.out.println("Enter task ID to complete : ");
-				if(!scan.hasNextInt()) {
-					System.out.println("Please enter a valid task ID");
-					scan.nextLine();
-					break;
-				}
-				
-				int id = scan.nextInt();
-				
-				boolean found = false;
-				
-				for (Task t : tasks) {
-					if(t.id == id) {
-						t.completed = true;
-						found = true;
-						
-						System.out.println("Task marked as a Completed. ");
-						break;
-					}
-				}
+				completeTask();
 				
 			case 4:
-				if(tasks.isEmpty()) {
-					System.out.println("No tasks added yet. ");
-					break;
-				}
-				
-				System.out.println("Enter task ID to delete : ");
-				if(!scan.hasNextInt()) {
-					System.out.println("Please enter a valid ID to delete");
-					scan.nextLine();
-					break;
-				}
-				
-				int deleteId = scan.nextInt();
-				
-				boolean deleted = false;
-				
-				Iterator<Task> iterator = tasks.iterator(); 
-				
-				while(iterator.hasNext()) {
-					Task t = iterator.next();
-					
-					if(t.id == deleteId) {
-						iterator.remove();
-						deleted = true;
-						
-						System.out.println("Task deleted successfully");
-						break;
-					}
-				}
-				
-				if(!deleted) {
-					System.out.println("Task not found ");
-				}
-				
+				deleteTask();
 				break;
 				
 			case 5:
@@ -151,7 +171,8 @@ public class ToDoLIstApp {
 				scan.close();
 				break;
 				
-			default: System.out.println("InValid Choice ");
+			default: 
+				System.out.println("InValid Choice ");
 			}
 		}
 	}
