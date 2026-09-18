@@ -1,6 +1,7 @@
 package ToDoList;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class ToDoLIstApp {
@@ -12,6 +13,7 @@ public class ToDoLIstApp {
 		int nextId = 1;
 		
 		while(true) {
+			System.out.println();
 			System.out.println("   ");
 			System.out.println(" ======= To Do List ======");
 			System.out.println("");
@@ -21,7 +23,13 @@ public class ToDoLIstApp {
 			System.out.println("4. Delete task ");
 			System.out.println("5. Exit ");
 			System.out.println();
+			
 			System.out.println("Enter your choice : ");
+			if(!scan.hasNextInt()) {
+				System.out.println("Please enter a number!");
+				scan.nextLine();
+				continue;
+			}
 			int choice = scan.nextInt();
 			scan.nextLine();
 			
@@ -81,6 +89,12 @@ public class ToDoLIstApp {
 				}
 				
 				System.out.println("Enter task ID to complete : ");
+				if(!scan.hasNextInt()) {
+					System.out.println("Please enter a valid task ID");
+					scan.nextLine();
+					break;
+				}
+				
 				int id = scan.nextInt();
 				
 				boolean found = false;
@@ -102,16 +116,26 @@ public class ToDoLIstApp {
 				}
 				
 				System.out.println("Enter task ID to delete : ");
+				if(!scan.hasNextInt()) {
+					System.out.println("Please enter a valid ID to delete");
+					scan.nextLine();
+					break;
+				}
+				
 				int deleteId = scan.nextInt();
 				
 				boolean deleted = false;
 				
-				for(Task t : tasks) {
+				Iterator<Task> iterator = tasks.iterator(); 
+				
+				while(iterator.hasNext()) {
+					Task t = iterator.next();
+					
 					if(t.id == deleteId) {
-						tasks.remove(t);
+						iterator.remove();
 						deleted = true;
 						
-						System.out.println("Task deleted! ");
+						System.out.println("Task deleted successfully");
 						break;
 					}
 				}
