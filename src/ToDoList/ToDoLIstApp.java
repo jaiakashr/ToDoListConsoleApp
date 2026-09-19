@@ -32,15 +32,7 @@ public class ToDoLIstApp {
 			System.out.println("==== VIEW TASKS ====");
 			
 			for(Task t : tasks) {
-				String status;
-				if(t.completed) {
-					status = "completed";
-				}
-				else {
-					status = "pending";
-				}
-				
-				System.out.println(t.id+ ". "+ t.title+". "+"["+status+"]");
+				System.out.println(t);
 			}
 		}
 	}
@@ -52,15 +44,7 @@ public class ToDoLIstApp {
 			System.out.println("====== YOUR TASKS ======");
 				
 			for (Task t : tasks) {
-				String status;
-					
-				if(t.completed) {
-					status = "completed";
-				}else {
-					status = "pending";
-				}
-					
-				System.out.println(t.id +". " + t.title+ ". " +"["+ status+"]" );
+				System.out.println(t);
 			}
 		}
 		
@@ -76,8 +60,8 @@ public class ToDoLIstApp {
 		boolean found = false;
 		
 		for (Task t : tasks) {
-			if(t.id == id) {
-				t.completed = true;
+			if(t.getId() == id) {
+				t.setCompleted(true);
 				found = true;
 				
 				System.out.println("Task marked as a Completed. ");
@@ -112,7 +96,7 @@ public class ToDoLIstApp {
 		while(iterator.hasNext()) {
 			Task t = iterator.next();
 			
-			if(t.id == deleteId) {
+			if(t.getId() == deleteId) {
 				iterator.remove();
 				deleted = true;
 				
@@ -161,6 +145,7 @@ public class ToDoLIstApp {
 				
 			case 3:
 				completeTask();
+				break;
 				
 			case 4:
 				deleteTask();
